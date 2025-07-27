@@ -53,7 +53,7 @@ ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   theme(legend.position = "none")
 
 # save as jpeg
-jpeg("D:/GoogleDrive/Personal project/PRS-asthma/Images/PRS_scores_by_1000_Genomes_ancestry_group.jpeg")
+jpeg("D:/GoogleDrive/Personal project/PRS-asthma/Images/PRS_scores_by_1000_Genomes_ancestry_group.jpeg", dpi=300)
 ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +

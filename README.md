@@ -213,7 +213,7 @@ tail(prs)
 dim(prs)
 ```
 
-Next, import the population information and merge it with the PRS results.
+Import the population information and merge it with the PRS results.
 
 ```R
 pop_info <- read.table("path/to/1KGP/integrated_call_samples_v3.20130502.ALL.panel", header=TRUE)
@@ -224,7 +224,15 @@ head(geno_pop)
 tail(geno_pop)
 ```
 
-Next, plot the PRS scores by ancestry group.
+```R
+summary(geno_pop$SCORESUM)
+```
+
+| Min. | 1st Qu. | Median | Mean | 3rd Qu. | Max. |
+|------|---------|--------|------|---------|------|
+| 8.922 | 23.620 | 27.388 | 27.054 | 30.497 | 43.759 |
+
+Plot the PRS scores by ancestry group.
 
 ```R
 library(ggplot2)
