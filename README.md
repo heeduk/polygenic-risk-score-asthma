@@ -1,6 +1,6 @@
 # 🧬 Polygenic Risk Score (PRS) Pipeline with 1000 Genomes and Asthma GWAS
 
-This project demonstrates an end-to-end pipeline to calculate Polygenic Risk Scores (PRS) using the public 1000 Genomes Project genotype data and asthma GWAS summary statistics. The pipeline covers data download, preprocessing, quality control, format conversion, scoring with PLINK, and initial summary.
+This project demonstrates calculation of Polygenic Risk Scores (PRS) using the public 1000 Genomes Project genotype data and asthma GWAS summary statistics. The pipeline covers data download, preprocessing, quality control, format conversion, scoring with PLINK, and initial summary.
 
 ---
 
@@ -23,7 +23,7 @@ Polygenic Risk Scores (PRS) estimate the genetic predisposition of individuals t
 - Genotypes: 1000 Genomes Project phase 3 data
 - Summary statistics: GWAS Catalog asthma GWAS (GCST005212)
 - Tools: PLINK 1.9 (local binary)
-- Analysis environment: Bash scripts with SLURM scheduler for job submission
+- Analysis environment: Bash scripts with SLURM scheduler for job submission and R for downstream analysis and visualization
 
 The goal is to convert variant data, clean and harmonize it, score individuals chromosome-wise, merge results for full-genome PRS, and explore basic summary statistics.
 
@@ -62,7 +62,7 @@ export PATH="$HOME/local/bin:$PATH"
 
 ### 2. Data Download
 
-#### 1000 Genomes (Example for Chr 1)
+#### From 1000 Genomes Project (Example for Chr 1)
 ```
 
 wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
@@ -75,8 +75,12 @@ wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr1.phase3_s
 ```
 
 wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST005001-GCST006000/GCST005212/harmonised/29273806-GCST005212-EFO_0000270.h.tsv.gz
-wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST005001-GCST006000/GCST005212/harmonised/readme.txt
 
+```
+
+##### check the file
+```
+zcat /path/to/GWASsummarystats/Asthma_Demenais-et-al/29273806-GCST005212-EFO_0000270.h.tsv.gz | head
 ```
 
 ### 3. Install PLINK Locally
@@ -94,8 +98,8 @@ Example for processing any chromosome passed as `$1`:
 ```
 
 chr=$1
-~/local/bin/plink --vcf /home/wolftech/hoh5/Personal_project/1KGP/ALL.chr${chr}.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz \
---make-bed --out /home/wolftech/hoh5/Personal_project/1KGP/1kgp_chr\${chr}
+~/local/bin/plink --vcf /path/to/1KGP/ALL.chr${chr}.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz \
+--make-bed --out /path/to/1KGP/1kgp_chr\${chr}
 
 ```
 
