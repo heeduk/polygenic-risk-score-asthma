@@ -1,0 +1,33 @@
+PLINK v1.90b6.21 64-bit (19 Oct 2020)
+Options in effect:
+  --bfile /home/wolftech/hoh5/Personal_project/1KGP/1kgp_chr11_nodup
+  --out /home/wolftech/hoh5/Personal_project/GWASsummarystats/Asthma_Demenais-et-al/PRS_results/1kgp_chr11_asthmaPRS
+  --score /home/wolftech/hoh5/Personal_project/GWASsummarystats/Asthma_Demenais-et-al/asthma_chr11.prs 1 2 3 sum
+
+Hostname: PHHI-HPC001
+Working directory: /home/wolftech/hoh5/Personal_project/GWASsummarystats/Asthma_Demenais-et-al
+Start time: Sun Jul 27 13:07:56 2025
+
+Random number seed: 1753636076
+192080 MB RAM detected; reserving 96040 MB for main workspace.
+4045610 variants loaded from .bim file.
+2504 people (0 males, 0 females, 2504 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to
+/home/wolftech/hoh5/Personal_project/GWASsummarystats/Asthma_Demenais-et-al/PRS_results/1kgp_chr11_asthmaPRS.nosex
+.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 2504 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.999834.
+4045610 variants and 2504 people pass filters and QC.
+Note: No phenotypes present.
+Warning: 102008 lines skipped in --score file (102008 due to variant ID
+mismatch, 0 due to allele code mismatch); see
+/home/wolftech/hoh5/Personal_project/GWASsummarystats/Asthma_Demenais-et-al/PRS_results/1kgp_chr11_asthmaPRS.nopred
+for details.
+--score: 542 valid predictors loaded.
+--score: Results written to
+/home/wolftech/hoh5/Personal_project/GWASsummarystats/Asthma_Demenais-et-al/PRS_results/1kgp_chr11_asthmaPRS.profile
+.
+
+End time: Sun Jul 27 13:07:59 2025
