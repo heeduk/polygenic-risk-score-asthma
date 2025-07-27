@@ -78,10 +78,26 @@ wget https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST005001-GCST
 
 ```
 
-##### check the file
+##### Check the file
+
+We check if the file looks correct, and also, which columns we need for downstream analysis.
 ```
 zcat /path/to/GWASsummarystats/Asthma_Demenais-et-al/29273806-GCST005212-EFO_0000270.h.tsv.gz | head
 ```
+
+Example:
+| hm_variant_id     | hm_rsid       | hm_chrom  | hm_pos  | hm_other_allele  | hm_effect_allele  | hm_beta |
+|------------------|---------------|-----------|---------|------------------|-------------------|---------|
+| 10_48232_G_A      | rs12218882    | 10        | 48232   | G                | A                 | 0.01893375 |
+| 10_48486_C_T      | rs10904045    | 10        | 48486   | C                | T                | -0.00831161 |
+| 10_52541_A_C      | rs12255619    | 10        | 52541   | A                | C                 | 0.02427214 |
+| 10_66015_A_G      | rs7909677     | 10        | 66015   | A                | G                 | 0.02999423 |
+| 10_67284_T_C      | rs11253113    | 10        | 67284   | T                | C                 | 0.01635232 |
+| 10_67994_A_C      | rs10904494    | 10        | 67994   | A                | C                 | 0.00377772 |
+| 10_68368_T_C      | rs10904505    | 10        | 68368   | T                | C                 | 0.01330745 |
+| 10_68839_C_T      | rs11253204    | 10        | 68839   | C                | T                 | 0.01023612 |
+| 10_78827_C_T      | rs9419461     | 10        | 78827   | C                | T                | -0.00037874 |
+
 
 ### 3. Install PLINK Locally
 ```
@@ -183,6 +199,44 @@ Example lines from a `.profile` PRS output file:
 Values indicate the PRS scores are successfully computed.
 
 ---
+
+## Import the PRS results into R and explore the data
+
+First, import the PRS results into R.
+
+```R
+prs <- read.table("path/to/PRS_results/1kgp_allchr_asthmaPRS.profile", header=TRUE)
+
+# check if the file is read correctly
+head(prs)
+tail(prs)
+dim(prs)
+```
+
+Next, import the population information and merge it with the PRS results.
+
+```R
+pop_info <- read.table("path/to/1KGP/integrated_call_samples_v3.20130502.ALL.panel", header=TRUE)
+head(pop_info)
+
+geno_pop <- merge(prs, pop_info, by.x="IID", by.y="sample")
+head(geno_pop)
+tail(geno_pop)
+```
+
+Next, plot the PRS scores by ancestry group.
+
+```R
+library(ggplot2)
+ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
+  geom_violin(trim=FALSE) +
+  geom_boxplot(width=0.1, fill="white") +
+  theme_minimal() +
+  labs(title="PRS Scores by 1000 Genomes Ancestry Group", x="Ancestry Group", y="PRS Score") +
+  theme(legend.position = "none")
+```
+
+![PRS Scores by 1000 Genomes Ancestry Group](Images/PRS_scores_by_1000_Genomes_ancestry_group.jpeg)
 
 ## Next Steps and Analysis Ideas
 
