@@ -36,13 +36,23 @@ tail(geno_pop)
 ```
 
 ```{r}
-hist(geno_pop$SCORESUM, breaks=50, main="PRS Score Distribution for Asthma (1000 Genomes Chr1)", xlab="PRS Score")
+hist(geno_pop$SCORESUM, breaks=50, main="PRS Score Distribution for Asthma (1000 Genomes)", xlab="PRS Score")
 ```
 
 ```{r}
 summary(geno_pop$SCORESUM)
 ```
 
+
+```{r}
+# reorder by SCORESUM
+geno_pop <- geno_pop[order(geno_pop$SCORESUM, decreasing=TRUE),]
+
+# population of top 5%
+table(head(geno_pop, n=ceiling(nrow(geno_pop)*0.05))$super_pop)
+```
+
+Plot distribution of PRS scores by ancestry group
 ```{r}
 library(ggplot2)
 ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
@@ -53,12 +63,33 @@ ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   theme(legend.position = "none")
 
 # save as jpeg
-jpeg("D:/GoogleDrive/Personal project/PRS-asthma/Images/PRS_scores_by_1000_Genomes_ancestry_group.jpeg", dpi=300)
+png("D:/GoogleDrive/Personal project/PRS-asthma/Images/PRS_scores_by_1000_Genomes_ancestry_group.png", width=6, height=4, units = "in", res = 300)
 ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
-  labs(title="PRS Scores by 1000 Genomes Ancestry Group", x="Ancestry Group", y="PRS Score") +
+  labs(x="Ancestry Group", y="PRS Score") +
+  theme(legend.position = "none")
+dev.off()
+```
+
+Plot distribution by gender
+
+```{r}
+ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
+  geom_violin(trim=FALSE) +
+  geom_boxplot(width=0.1, fill="white") +
+  theme_minimal() +
+  labs(title="PRS Scores by Gender", x="Gender", y="PRS Score") +
+  theme(legend.position = "none")
+
+# save as jpeg
+png("D:/GoogleDrive/Personal project/PRS-asthma/Images/PRS_scores_by_gender.png", width=4, height=4, units = "in", res = 300)
+ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
+  geom_violin(trim=FALSE) +
+  geom_boxplot(width=0.1, fill="white") +
+  theme_minimal() +
+  labs(x="Gender", y="PRS Score") +
   theme(legend.position = "none")
 dev.off()
 ```
