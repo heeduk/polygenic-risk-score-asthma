@@ -6,15 +6,20 @@ This project demonstrates calculation of Polygenic Risk Scores (PRS) using the p
 
 ## Table of Contents
 
+- [Starting Notes](#starting-notes)
 - [Project Overview](#project-overview)
 - [Directory Structure](#directory-structure)
 - [Step-by-Step Workflow](#step-by-step-workflow)
 - [Output and Interpretation](#output-and-interpretation)
-- [Next Steps and Analysis Ideas](#next-steps-and-analysis-ideas)
+- [Further Notes](#further-notes)
 - [References and Resources](#references-and-resources)
-- [Contact](#contact)
 
 ---
+
+## Starting Notes
+- this is a very basic analysis to get familiar with human genomics data and PRS
+- my background is in plant genomics and quantitative genetics (different background)
+- i don't have access to most human genomics data (e.g., ) so this is using 1kgp and asthma GWAS summary statistics to get familiar with PRS.
 
 ## Project Overview
 
@@ -202,7 +207,7 @@ Values indicate the PRS scores are successfully computed.
 
 ## Import the PRS results into R and explore the data
 
-First, import the PRS results into R.
+### Import the PRS results into R.
 
 ```R
 prs <- read.table("path/to/PRS_results/1kgp_allchr_asthmaPRS.profile", header=TRUE)
@@ -213,7 +218,7 @@ tail(prs)
 dim(prs)
 ```
 
-Import the population information and merge it with the PRS results.
+### Import the population information and merge it with the PRS results.
 
 ```R
 pop_info <- read.table("path/to/1KGP/integrated_call_samples_v3.20130502.ALL.panel", header=TRUE)
@@ -232,7 +237,7 @@ summary(geno_pop$SCORESUM)
 |------|---------|--------|------|---------|------|
 | 8.922 | 23.620 | 27.388 | 27.054 | 30.497 | 43.759 |
 
-Plot the PRS scores by ancestry group.
+### Plot the PRS scores by ancestry group.
 
 ```R
 library(ggplot2)
@@ -246,13 +251,21 @@ ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
 
 ![PRS Scores by 1000 Genomes Ancestry Group](Images/PRS_scores_by_1000_Genomes_ancestry_group.jpeg)
 
-## Next Steps and Analysis Ideas
+## Further Notes
 
-- Plot score distribution via R or Python (histograms, density plots).
-- Stratify scores by ancestry groups (use the 1KGP panel file).
-- Calculate summary statistics: means, variances, compare subpopulations.
 - Explore score associations with phenotypes if available.
-- Extend pipeline to other traits or datasets.
+- The 1000 Genomes Project data does not have any phenotype information, so we cannot validate the PRS scores. No medical or phenotype information was collected for these individuals
+- Compare with literature. is this high/low? (this was a healthy population)
+- print the max few lines of the PRS results.
+- are there any other similar analysis in plants? genomic prediction? how is it different?
+- number of people in each population
+- comparison among population
+- calculate mean, standard deviation, z-score, etc.
+- top 5% of the PRS scores
+
+
+
+
 
 ---
 
@@ -261,20 +274,10 @@ ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
 - [PLINK](https://www.cog-genomics.org/plink/)
 - [1000 Genomes Project](https://www.internationalgenome.org/)
 - [GWAS Catalog Asthma Study GCST005212](https://www.ebi.ac.uk/gwas/studies/GCST005212)
-- Scripts and job submissions designed for SLURM workload manager
-- Local standalone binary setup to avoid system-wide installs
+
 
 ---
 
-## Contact
-
-For questions or suggestions, please contact:
-
-- [Your Name or Handle]
-- Email: hoh5@ncsu.edu (example)
-- GitHub: [https://github.com/heeduk](https://github.com/heeduk)
-
----
 
 *This README serves as both documentation and technical showcase of a PRS workflow incorporating public genotype and GWAS data resources.*
 
