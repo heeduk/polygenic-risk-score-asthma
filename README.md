@@ -1,4 +1,4 @@
-# 🧬 Polygenic Risk Score (PRS) Pipeline with 1000 Genomes and Asthma GWAS
+# Polygenic Risk Score (PRS) Pipeline with 1000 Genomes and Asthma GWAS
 
 This project demonstrates calculation of Polygenic Risk Scores (PRS) using the public 1000 Genomes Project genotype data and asthma GWAS summary statistics. The pipeline covers data download, preprocessing, quality control, format conversion, scoring with PLINK, and initial summary.
 
