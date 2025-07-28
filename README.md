@@ -276,7 +276,7 @@ summary(geno_pop$SCORESUM)
 |------|---------|--------|------|---------|------|
 | 8.922 | 23.620 | 27.388 | 27.054 | 30.497 | 43.759 |
 
-### Plot the PRS scores by ancestry group.
+### Plot the PRS scores by population.
 
 ```R
 library(ggplot2)
@@ -284,11 +284,11 @@ ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
-  labs(x="Ancestry Group", y="PRS Score") +
+  labs(x="Population", y="PRS Score") +
   theme(legend.position = "none")
 ```
 
-<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_1000_Genomes_ancestry_group.png" alt="PRS Scores by 1000 Genomes Ancestry Group" width="400" />
+<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_1000_Genomes_population.png" alt="PRS Scores by 1000 Genomes Population" width="800" />
 
 - Acronyms: African (AFR), American (AMR), East Asian (EAS), European (EUR), and South Asian (SAS).
 - Europe has the highest PRS scores.
@@ -322,7 +322,7 @@ ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
   theme(legend.position = "none")
 ```
 
-<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_gender.png" alt="PRS Scores by Gender" width="200" />
+<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_gender.png" alt="PRS Scores by Gender" width="400" />
 
 - The PRS scores are similar between males and females.
 
@@ -345,7 +345,7 @@ ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
 - **Standardization and Reporting:**
   - In human genetics, it is **common practice to standardize the PRS**. For example, converting raw PRS to Z-scores across a population sample prior to downstream analysis or interpretation. This makes results comparable between studies and easier to interpret. Including Z-score or percentile normalization could be included in future steps.
 
-- **Feedback and Collaboration:**
+- **Feedback:**
   - Thank you for exploring this workflow. Any questions or constructive feedback are greatly appreciated!
   - If you have suggestions or advice, please contact me at heeduk2000@gmail.com or www.linkedin.com/in/heedukoh.  
 

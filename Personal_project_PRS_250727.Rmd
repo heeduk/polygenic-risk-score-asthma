@@ -47,7 +47,7 @@ geno_pop <- geno_pop[order(geno_pop$SCORESUM, decreasing=TRUE),]
 table(head(geno_pop, n=ceiling(nrow(geno_pop)*0.05))$super_pop)
 ```
 
-## Plot distribution of PRS scores by ancestry group
+## Plot distribution of PRS scores by population
 
 ```{r}
 library(ggplot2)
@@ -55,16 +55,16 @@ ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
-  labs(title="PRS Scores by 1000 Genomes Ancestry Group", x="Ancestry Group", y="PRS Score") +
+  labs(title="PRS Scores by 1000 Genomes Population", x="Population", y="PRS Score") +
   theme(legend.position = "none")
 
 # save as png
-png("./GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_1000_Genomes_ancestry_group.png", width=6, height=4, units = "in", res = 300)
+png("./GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_1000_Genomes_population.png", width=6, height=4, units = "in", res = 300)
 ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
-  labs(x="Ancestry Group", y="PRS Score") +
+  labs(x="Population", y="PRS Score") +
   theme(legend.position = "none")
 dev.off()
 ```
