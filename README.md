@@ -43,14 +43,11 @@ The objective is to process population-scale genotype and summary statistic data
 ```
 
 .
-├── bin/                       \# Local binaries (plink, tools)
-├── data/
-│   ├── 1KGP/                  \# 1000 Genomes VCF and PLINK files
-│   └── GWASsummarystats/      \# GWAS summary statistics files
-├── scripts/                   \# Bash job scripts
-├── results/
-│   ├── PRS_results/           \# Scoring result profiles
-│   └── Images/                \# (optional) plot outputs
+├── 1KGP/                      \# 1000 Genomes VCF and PLINK files
+├── GWASsummarystats/          \# GWAS summary statistics files
+│   └── Asthma_Demenais-et-al/ \# Asthma data
+│      └── PRS_results/        \# Scoring result profiles
+│         └── Images/          \# Plot outputs
 └── README.md
 
 ```
@@ -95,17 +92,17 @@ zcat /path/to/GWASsummarystats/Asthma_Demenais-et-al/29273806-GCST005212-EFO_000
 ```
 
 Example:
-| hm_variant_id     | hm_rsid       | hm_chrom  | hm_pos  | hm_other_allele  | hm_effect_allele  | hm_beta |
-|------------------|---------------|-----------|---------|------------------|-------------------|---------|
-| 10_48232_G_A      | rs12218882    | 10        | 48232   | G                | A                 | 0.01893375 |
-| 10_48486_C_T      | rs10904045    | 10        | 48486   | C                | T                | -0.00831161 |
-| 10_52541_A_C      | rs12255619    | 10        | 52541   | A                | C                 | 0.02427214 |
-| 10_66015_A_G      | rs7909677     | 10        | 66015   | A                | G                 | 0.02999423 |
-| 10_67284_T_C      | rs11253113    | 10        | 67284   | T                | C                 | 0.01635232 |
-| 10_67994_A_C      | rs10904494    | 10        | 67994   | A                | C                 | 0.00377772 |
-| 10_68368_T_C      | rs10904505    | 10        | 68368   | T                | C                 | 0.01330745 |
-| 10_68839_C_T      | rs11253204    | 10        | 68839   | C                | T                 | 0.01023612 |
-| 10_78827_C_T      | rs9419461     | 10        | 78827   | C                | T                | -0.00037874 |
+| hm_variant_id     | hm_rsid | hm_chrom | hm_pos | hm_other_allele | hm_effect_allele | hm_beta |
+|------------------|---------|----------|--------|-----------------|--------------------|---------|
+| 10_48232_G_A      | rs12218882 | 10 | 48232 | G | A | 0.01893375 |
+| 10_48486_C_T      | rs10904045 | 10 | 48486 | C | T | -0.00831161 |
+| 10_52541_A_C      | rs12255619 | 10 | 52541 | A | C | 0.02427214 |
+| 10_66015_A_G      | rs7909677 | 10 | 66015 | A | G | 0.02999423 |
+| 10_67284_T_C      | rs11253113 | 10 | 67284 | T | C | 0.01635232 |
+| 10_67994_A_C      | rs10904494 | 10 | 67994 | A | C | 0.00377772 |
+| 10_68368_T_C      | rs10904505 | 10 | 68368 | T | C | 0.01330745 |
+| 10_68839_C_T      | rs11253204 | 10 | 68839 | C | T | 0.01023612 |
+| 10_78827_C_T      | rs9419461 | 10 | 78827 | C | T | -0.00037874 |
 
 
 ### 3. Install PLINK Locally
@@ -247,7 +244,7 @@ The 1000 Genomes Project has 2,504 samples.
 dim(geno_pop)
 ```
 
-| [1] | 2504    9 |
+`[1] 2504    9` 
 
 The 2504 individuals from the 1KGP represent five continental populations: African (AFR), American (AMR), East Asian (EAS), European (EUR), and South Asian (SAS).
 
@@ -287,15 +284,17 @@ ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
-  labs(title="PRS Scores by 1000 Genomes Ancestry Group", x="Ancestry Group", y="PRS Score") +
+  labs(x="Ancestry Group", y="PRS Score") +
   theme(legend.position = "none")
 ```
 
-![PRS Scores by 1000 Genomes Ancestry Group](Images/PRS_scores_by_1000_Genomes_ancestry_group.png)
+<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_1000_Genomes_ancestry_group.png" alt="PRS Scores by 1000 Genomes Ancestry Group" width="400" />
 
 - Acronyms: African (AFR), American (AMR), East Asian (EAS), European (EUR), and South Asian (SAS).
 - Europe has the highest PRS scores.
 - Africa has the lowest PRS scores.
+
+### Population of top 5% PRS scores.
 
 ```R
 # reorder by SCORESUM
@@ -319,11 +318,11 @@ ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
-  labs(title="PRS Scores by Gender", x="Gender", y="PRS Score") +
+  labs(x="Gender", y="PRS Score") +
   theme(legend.position = "none")
 ```
 
-![PRS Scores by Gender](Images/PRS_scores_by_gender.png)
+<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_gender.png" alt="PRS Scores by Gender" width="200" />
 
 - The PRS scores are similar between males and females.
 
@@ -331,7 +330,7 @@ ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
 
 - **Parallels to Plant Genomics:**
   - Both fields share the core principle of inferring quantitative trait values from genotype data, but they differ mainly in **data availability, application goals, and validation strategy**.
-  - In plant genomics, the analogous strategy to PRS is often referred to as **genomic prediction or genomic selection**. These methods are widely used in plant and animal breeding to estimate the breeding values (genetic merit) of individuals.
+  - In plant genomics, the analogous strategy to PRS is often referred to as **genomic prediction** or **genomic selection**. These methods are widely used in plant and animal breeding to estimate the breeding values (genetic merit) of individuals.
   - **Key differences:**  
     - In plant studies, **phenotype data is typically available** (e.g., yield, disease resistance), so models can be trained and validated with real trait data.
     - Genomic prediction in plants often uses best linear unbiased prediction (**GBLUP**) or other mixed models, whereas PRS in humans generally involves simple allele effect summing using GWAS weights.
@@ -348,7 +347,7 @@ ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
 
 - **Feedback and Collaboration:**
   - Thank you for exploring this workflow. Any questions or constructive feedback are greatly appreciated!
-  - If you have suggestions or advice, please contact me at heeduk2000@gmail.com.  
+  - If you have suggestions or advice, please contact me at heeduk2000@gmail.com or www.linkedin.com/in/heedukoh.  
 
 
 ---
