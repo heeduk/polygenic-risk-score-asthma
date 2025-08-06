@@ -276,25 +276,82 @@ summary(geno_pop$SCORESUM)
 |------|---------|--------|------|---------|------|
 | 8.922 | 23.620 | 27.388 | 27.054 | 30.497 | 43.759 |
 
-### Plot the PRS scores by population.
+### Compare the PRS scores by population.
+
+First, we run ANOVA to check if there are any significant differences in PRS scores between populations.
 
 ```R
+# Run one-way ANOVA
+aov_model <- aov(SCORESUM ~ super_pop, data = geno_pop)
+
+# Get the summary of the ANOVA model (shows F-statistic and p-value)
+summary(aov_model)
+```
+
+|   | Df | Sum Sq | Mean Sq | F value | Pr(>F) |
+|---|----|--------|---------|---------|--------|
+| super_pop | 4 | 20073 | 5018 | 254.4 | <2e-16 *** |
+| Residuals | 2499 | 49289 | 20 |  |  |
+
+- The p-value indicates there are significant differences in PRS scores between populations.
+
+To check which populations are significantly different from each other, we perform Tukey's Honest Significant Difference test.
+
+```R
+# Perform Tukey's Honest Significant Difference test
+tukey_results <- TukeyHSD(aov_model)
+print(tukey_results)
+```
+
+|   | diff | lwr | upr | p adj |
+|---|------|-----|-----|-------|
+| AMR-AFR | 5.0104447 | 4.20676456 | 5.8141248 | 0.0000000 |
+| EAS-AFR | 6.3983966 | 5.68148534 | 7.1153079 | 0.0000000 |
+| EUR-AFR | 7.2689454 | 6.55162992 | 7.9862609 | 0.0000000 |
+| SAS-AFR | 5.8907197 | 5.16759666 | 6.6138427 | 0.0000000 |
+| EAS-AMR | 1.3879519 | 0.54227746 | 2.2336264 | 0.0000763 |
+| EUR-AMR | 2.2585007 | 1.41248355 | 3.1045179 | 0.0000000 |
+| SAS-AMR | 0.8802750 | 0.02932821 | 1.7312218 | 0.0384376 |
+| EUR-EAS | 0.8705488 | 0.10647746 | 1.6346201 | 0.0162078 |
+| SAS-EAS | -0.5076769 | -1.27720301 | 0.2618492 | 0.3731945 |
+| SAS-EUR | -1.3782257 | -2.14812841 | -0.6083230 | 0.0000108 |
+
+With these results, we can plot the distribution of the populations and indicate the significant differences.
+
+```R
+# import the Tukey test results saved in an excel sheet
+library(readxl)
+stat.test <- read_excel("./PRS-asthma_stat_test_used_for_plotting_sig_diff_in_R.xlsx", sheet = "Sheet1") # excel made manually
+
+library(ggpubr)
 library(ggplot2)
 ggplot(geno_pop, aes(x=super_pop, y=SCORESUM, fill=super_pop)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
+  stat_pvalue_manual(stat.test, label = "p.adj.signif", 
+    remove.bracket=F, 
+    size=2.5, 
+    tip.length=0.01, 
+    linetype=1, 
+    vjust="vjust", 
+    bracket.shorten = 0.05, 
+    color = "black")+
   labs(x="Population", y="PRS Score") +
   theme(legend.position = "none")
 ```
 
-<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_1000_Genomes_population.png" alt="PRS Scores by 1000 Genomes Population" width="800" />
+<img src="Images/PRS_scores_by_1000_Genomes_population_with_sigdiff.png" alt="PRS Scores by 1000 Genomes Population" width="800" />
 
 - Acronyms: African (AFR), American (AMR), East Asian (EAS), European (EUR), and South Asian (SAS).
+- **, p < 0.01; *, p < 0.05; ns, not significant.
 - Europe has the highest PRS scores.
 - Africa has the lowest PRS scores.
+- All populations were significantly different from each other (p < 0.05) except for SAS and EAS.
 
 ### Population of top 5% PRS scores.
+
+We can also check which populations the top 5% PRS scores are from.
 
 ```R
 # reorder by SCORESUM
@@ -308,23 +365,52 @@ table(head(geno_pop, n=ceiling(nrow(geno_pop)*0.05))$super_pop)
 |-----|-----|-----|-----|
 | 16 | 8 | 70 | 32 |
 
-- Indeed, the top 5% PRS scores are mostly from Europeans.
+- The top 5% PRS scores are mostly from Europeans.
 
-### Plot the PRS scores by gender.
+### Compare the PRS scores by gender.
+
+The dataset also includes info on gender, so we can compare the PRS scores by gender.
 
 ```R
+# Run one-way ANOVA
+aov_model <- aov(SCORESUM ~ gender, data = geno_pop)
+
+# Get the summary of the ANOVA model (shows F-statistic and p-value)
+summary(aov_model)
+```
+
+|   | Df | Sum Sq | Mean Sq | F value | Pr(>F) |
+|---|----|--------|---------|---------|--------|
+| gender | 1 | 39 | 38.72 | 1.397 | 0.237 |
+| Residuals | 2502 | 69323 | 27.71 |   |   |
+
+- The p-value indicates there are no significant differences in PRS scores between genders.
+
+```R
+# import the Tukey test results saved in an excel sheet
+library(readxl)
+stat.test <- read_excel("./PRS-asthma_stat_test_used_for_plotting_sig_diff_in_R.xlsx", sheet = "Sheet2") # excel made manually
+
 library(ggplot2)
 ggplot(geno_pop, aes(x=gender, y=SCORESUM, fill=gender)) +
   geom_violin(trim=FALSE) +
   geom_boxplot(width=0.1, fill="white") +
   theme_minimal() +
+  stat_pvalue_manual(stat.test, label = "p.adj.signif", 
+    remove.bracket=F, 
+    size=2.5, 
+    tip.length=0.01, 
+    linetype=1, 
+    vjust="vjust", 
+    bracket.shorten = 0.05, 
+    color = "black")+
   labs(x="Gender", y="PRS Score") +
   theme(legend.position = "none")
 ```
 
-<img src="GWASsummarystats/Asthma_Demenais-et-al/PRS_results/Images/PRS_scores_by_gender.png" alt="PRS Scores by Gender" width="400" />
+<img src="Images/PRS_scores_by_gender_with_sigdiff.png" alt="PRS Scores by Gender" width="400" />
 
-- The PRS scores are similar between males and females.
+- The PRS scores were not significantly different (p < 0.05) between males and females.
 
 ## Further Notes
 
